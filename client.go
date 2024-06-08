@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -87,8 +88,8 @@ func (c *Client) broadcast() {
 		}
 
 		m.MessageType = t
-		m.From = c.username
-
+		m.From = template.HTMLEscapeString(c.username)
+		m.Message = template.HTMLEscapeString(m.Message)
 		c.room.Receiver <- m
 	}
 
