@@ -23,10 +23,10 @@ func (r *Room) start() {
 	for {
 		select {
 		case buf := <-r.Receiver:
+			r.History.AddMessage(buf)
 			for client := range r.Clients {
 				select {
 				case client.receiver <- buf:
-					r.History.AddMessage(buf)
 				default:
 					close(client.receiver)
 					delete(r.Clients, client)
