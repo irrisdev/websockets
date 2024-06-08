@@ -1,0 +1,24 @@
+{{ define "chat" }}
+<div class="border" hx-ext="ws" ws-connect="/ws?username={{ .Username }}" id="chat">
+
+    <div class="overflow-y-auto h-64 p-2" id="chat_room" hx-on::load="this.scrollTo(0, this.scrollHeight)">
+
+        {{ range .ChatData }}
+        <p class="text-gray-100">{{ .From }}: {{ .Message }}</p>
+        {{ end }}
+
+    </div>
+
+    <form id="MessageForm" ws-send class="space-x-2" hx-on::ws-after-send="this.reset()">
+        <label>
+            <input
+                    type="text"
+                    placeholder="Type a message"
+                    name="message"
+                    class="w-full p-2 border-t bg-neutral-800 text-gray-100 focus:outline-none"
+                    required
+            />
+        </label>
+    </form>
+</div>
+{{ end }}
